@@ -1,0 +1,17 @@
+.foodButtonsDiv {
+	display: grid;
+	position: absolute;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 5px;
+
+	background-color: rebeccapurple;
+}
+.foodButtonsDiv button{
+	border-radius: 5px;
+	padding-block: 5px;
+	color: var(--white);
+	font-weight: 900;
+}
+.foodButtonsDiv button:last-child{
+	grid-column: 1/3;
+}

@@ -1,0 +1,110 @@
+.food {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: 10px;
+	min-width: 100px;
+	max-width: 250px;
+	padding: 10px;
+	border-radius: 10px;
+	/* background-color: var(--gray); */
+}
+
+.food img {
+	width: 100%;
+	aspect-ratio: 1/ 1;
+	border-radius: 10px;
+	z-index: 1;
+}
+
+.food #foodName {
+	font-size: 14px;
+	color: var(--greyText);
+}
+
+#prices {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	/* height: 100%; */
+
+	position: relative;
+}
+#ellipsisMenu {
+	position: absolute;
+	bottom: 50px;
+	right: 0px;
+	padding: 10px 10px;
+	border-radius: 10px;
+	background-color: var(--white);
+	z-index: 2;
+	box-shadow: 10px 10px 20px 5px var(--greyText);
+}
+#ellipsisMenu li{
+	display: flex;
+	align-items: center;
+	gap: 15px;
+	font-size: 14px;
+	cursor: pointer;
+	padding: 5px;
+	border-radius: 5px;
+	text-wrap: nowrap;
+}
+#ellipsisMenu li:hover {
+	background-color: var(--gray);
+}
+
+#details {
+	position: absolute;
+	right: 0;
+}
+#prices > * {
+	height: 100%;
+	align-content: end;
+}
+
+#prices #cancellerPrice {
+	font-size: 14px;
+	color: var(--greyText);
+	padding-block-end: 2px;
+	text-decoration: line-through;
+}
+
+.food #price {
+	font-size: 20px;
+	font-weight: 900;
+	color: var(--black);
+}
+
+.food #imageAndComment {
+	position: relative;
+}
+
+.food #recommendation {
+	position: absolute;
+	padding: 5px;
+	font-size: 14px;
+	bottom: 15px;
+	right: 10px;
+	color: var(--white);
+	border-radius: 5px;
+	background-color: var(--red);
+}
+
+.food #discount {
+	position: absolute;
+	padding: 5px;
+	font-size: 14px;
+	top: 10px;
+	left: 10px;
+	border-radius: 5px;
+	color: var(--white);
+	background-color: var(--purple);
+}
+
+.food #freePrice {
+	padding: 5px 10px 5px 10px;
+	border-radius: 5px;
+	color: var(--white);
+	background-color: var(--green);
+}

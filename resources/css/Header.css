@@ -1,0 +1,103 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-inline: 20px;
+    height: 8dvh;
+    border-bottom: 2px solid var(--gray);
+}
+
+header #app_name{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 5px;
+    font-size: 26px;
+    font-weight: 900;
+}
+header #app_name p{
+    display: flex;
+    align-items: center;
+    height: 100%;
+    text-decoration: none;
+}
+header #app_name p:last-child{
+    color: var(--green);
+}
+header input{
+    width: 25%;
+    height: 40px;
+}
+
+header li {
+    display: flex;
+    gap: 40px;
+    height: 100%;
+}
+header li ul{
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    height: 100%;
+    border: 5px solid transparent;
+    font-size: 14px;
+}
+header li ul:hover{
+    border-bottom: 5px solid var(--green);
+}
+header li ul:hover a{
+    color: var(--green);
+}
+header li ul a{
+    text-decoration: none;
+    color: var(--greyText);
+}
+
+header #userDiv {
+    display: flex;
+    position: relative;
+    height: 100%;
+    width: 20%;
+}
+header #userDiv::after{
+    content: '';
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    top: 5px;
+    right: 5px;
+    border-radius: 50%;
+    background-color: var(--green);
+}
+header #userDiv img{
+    margin-inline: 20px;
+    margin-block: 5px;
+    border-radius: 50%;
+}
+header #userDiv #userData{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 100%;
+    cursor: pointer;
+}
+header #userDiv #userData span{
+    font-weight: 900;
+    font-size: 16px;
+}
+header #userDiv #userData p{
+    color: var(--greyText);
+    font-size: 12px;
+}
+
+#dropDownBody {
+    display: flex;
+    flex-direction: column;
+}
