@@ -1,0 +1,144 @@
+body main {
+	display: flex;
+	height: 93vh;
+	width: 100vw;
+}
+
+body main section:first-child {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding-block: 20px;
+	padding-inline: 20px;
+	width: 80%;
+	overflow-y: scroll;
+}
+
+body main section:first-child .mainSectionHeader {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 30px;
+	padding-inline-end: 10px;
+	font-size: 18px;
+	/* background-color: rebeccapurple; */
+	z-index: -2;
+}
+
+body main section:first-child .mainSectionHeader h3{
+    font-weight: 900;
+}
+
+body main section:first-child .mainSectionHeader #arrowDiv {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 80px;
+	height: 100%;
+}
+
+#orderListSpan {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+
+#orderListSpan #usersCards {
+	display: flex;
+	gap: 20px;
+	width: 100%;
+	padding-block-end: 5px;
+	overflow-x: scroll;
+}
+
+#orderListSpan #usersCards .usersCard {
+	display: flex;
+	height: 50px;
+}
+
+#orderListSpan #usersCards .usersCard>div:first-child {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 24px;
+	font-weight: 900;
+	height: 100%;
+	aspect-ratio: 1 / 1;
+	color: var(--white);
+	background-color: var(--red);
+}
+
+#orderListSpan #usersCards .usersCard>div:nth-child(2) {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 25%;
+	height: 100%;
+	padding-inline: 10px;
+}
+
+#orderListSpan #usersCards .usersCard>div:nth-child(2) span {
+	font-size: 18px;
+	font-weight: 900;
+	width: 90px;
+}
+
+#orderListSpan #usersCards .usersCard>div:nth-child(2) p {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	font-size: 12px;
+	color: var(--greyText);
+}
+
+#orderListSpan #usersCards .usersCard>div:nth-child(2) p ion-icon {
+	font-weight: 900;
+}
+
+#orderListSpan #usersCards .usersCard #overallProgress {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 10px;
+	height: 100%;
+	width: 120px;
+}
+
+#orderListSpan #usersCards .usersCard #overallProgress #progress ion-icon,
+#orderListSpan #usersCards .usersCard #overallProgress #progress {
+	color: var(--white);
+}
+
+#orderListSpan #usersCards .usersCard #overallProgress #progress {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	height: 30px;
+	width: 70%;
+	border-radius: 7px;
+	font-size: 12px;
+	/* background-color: var(--yellow); */
+	background-color: var(--green);
+}
+
+#orderListSpan #usersCards .usersCard #overallProgress #progress ion-icon {
+	height: 100%;
+	width: 15px;
+}
+
+#orderListSpan #usersCards .usersCard #overallProgress p {
+	position: relative;
+	font-size: 12px;
+	color: var(--greyText);
+}
+
+#orderListSpan #usersCards .usersCard #overallProgress p::before {
+	content: " ";
+	position: absolute;
+	left: -20px;
+	top: 20%;
+	height: 10px;
+	aspect-ratio: 1 / 1;
+	background-color: var(--green);
+}

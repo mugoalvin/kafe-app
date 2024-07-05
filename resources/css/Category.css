@@ -1,0 +1,53 @@
+#categoriesSpan #categories {
+	display: flex;
+	overflow-x: scroll;
+	gap: 20px;
+	height: 125px;
+	padding-block: 10px;
+}
+
+#categoriesSpan #categories .category {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	padding: 10px;
+	height: 100%;
+	aspect-ratio: 1 / 1;
+	border: 2px solid var(--gray);
+	border-radius: 5px;
+	box-shadow: 0px 0 10px 5px var(--gray);
+	cursor: pointer;
+}
+
+#categoriesSpan #categories .category:hover {
+	border: 2px solid var(--green);
+}
+
+#categoriesSpan #categories .category #image {
+	width: 30%;
+	scale: 1.2;
+}
+
+#categoriesSpan #categories .category .categoryName {
+	font-size: 14px;
+	color: var(--greyText);
+}
+
+#categoriesSpan #categories .category p {
+	font-size: 14px;
+	font-weight: 900;
+	color: var(--greyText);
+}
+
+#categoriesSpan #categories .active {
+	background-color: var(--green);
+}
+
+#categoriesSpan #categories .active * {
+	color: var(--white) !important;
+}
+
+
+/* ======================================Active Category====================================== */
+/* ============================================================================================= */
+

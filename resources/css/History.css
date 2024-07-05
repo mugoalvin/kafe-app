@@ -1,0 +1,78 @@
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+.historyMain {
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+	padding: 20px;
+	height: 93dvh;
+	overflow-y: scroll;
+}
+
+.history {
+	width: 100%;
+	height: fit-content;
+	padding: 20px;
+	border-radius: 20px;
+	border: 1px solid var(--green);
+	/* background-color: var(--gray); */
+	box-shadow: 0px 0px 15px 0px var(--greyText);
+}
+.historyDate {
+	font-weight: 900;
+}
+.history .historyList {
+	display: flex;
+	height: fit-content;
+	padding: 20px 20px 10px 20px;
+	gap: 20px;
+}
+
+.history .historyList .historyItem {
+	width: 150px;
+}
+.history .historyList .historyItem img{
+	height: 200px;
+	height: 150px;
+	aspect-ratio: 1/1;
+	border-radius: 20px;
+}
+
+
+.history .historyList .historyItem .historyDetails{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+.history .historyList .historyItem .historyDetails > div{
+	font-weight: 900;
+	color: var(--green);
+}
+.history .historyList .historyItem .historyDetails > span{
+	font-size: 18px;
+	text-align: center;
+}
+
+.historyButtonDiv {
+	display: flex;
+	justify-content: end;
+	align-items: center;
+	gap: 20px;
+}
+.historyButtonDiv span{
+	font-size: 24px;
+	font-weight: 900;
+}
+
+.historyButtonDiv button {
+	color: var(--white);
+	width: fit-content;
+	padding-inline: 20px;
+	padding-block: 10px;
+	border-radius: 10px;
+}

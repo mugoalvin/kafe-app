@@ -1,0 +1,72 @@
+#foo {
+	display: flex;
+	flex-direction: column;
+	font-weight: 900;
+}
+
+#foo .item {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	font-size: 14px;
+}
+
+#foo .item>div {
+	display: flex;
+	margin-block: 10px;
+	gap: 10px;
+}
+
+#foo .item .noOfItems {
+	padding: 5px;
+	font-size: 14px;
+	font-weight: 900;
+	color: var(--white);
+	border-radius: 5px;
+	background-color: var(--green);
+}
+
+#foo .item span {
+	display: flex;
+	align-items: center;
+	font-size: 12px;
+	font-weight: normal;
+	color: var(--greyText);
+}
+
+#foo .item>p {
+	font-size: 10px;
+}
+
+
+
+
+#amounts {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+#amounts #amount {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	font-size: 12px;
+}
+
+#amounts #amount span {
+	color: var(--greyText);
+}
+
+#amounts #amount p {
+	font-weight: 900;
+}
+
+#total {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	font-weight: 900;
+	height: 50px;
+}
