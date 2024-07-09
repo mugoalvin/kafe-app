@@ -71,6 +71,7 @@ Route::get('/addFood', function () {
 // Foods
 Route::get('/getFoods', [FoodController::class, 'index']);
 Route::post('/addFood', [FoodController::class, 'store']);
+Route::post('editFood', [FoodController::class, 'update']);
 Route::post('/deleteFood', [FoodController::class, 'destroy']);
 
 // Orders

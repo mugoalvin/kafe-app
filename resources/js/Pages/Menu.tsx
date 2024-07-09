@@ -1,7 +1,7 @@
 import ListOrder from "@/myComponents/ListOrder";
 import Header from "../Views/Header";
 import CategoriesContainer, { categoryProp } from "@/myComponents/CategoriesContainer";
-import { FoodCategoryKey, getAllFoods, allFetchedFoods } from "@/Functions/FunctionsAndValues";
+import { FoodCategoryKey, getAllFoods } from "@/Functions/FunctionsAndValues";
 import { FoodItem } from "@/myComponents/Food";
 import { useEffect, useState } from "react";
 import FoodList, { getDiscountedPrice } from "@/myComponents/FoodList";
@@ -13,6 +13,7 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import AddFoodForm from "@/myComponents/AddFoodModal";
 import AddCategoryForm from "@/myComponents/AddCategoryForm";
+import EditFoodForm from "@/myComponents/EditFoodModal";
 
 
 const Menu = ({ auth }: PageProps) => {
@@ -22,8 +23,10 @@ const Menu = ({ auth }: PageProps) => {
 	const [availableFoods, setAvailableFoods] = useState<FoodItem[]>([])
 	const [categories, setCategories] = useState<categoryProp[]>([])
 	const [foodOccurrenceMap, setFoodOccurrenceMap] = useState<Record<string, number>>({})
+	const [foodToEdit, setFoodToEdit] = useState<Partial<FoodItem>>()
 	const [isNewFoodPromptOpen, toggleNewFoodPrompt] = useState<boolean>(false)
 	const [isAddCategoryPromptOpen, toggleNewCategoryPrompt] = useState<boolean>(false)
+	const [isEditPromptOpen, toggleEditPrompt] = useState<boolean>(false)
 	const [selectedFoods, setSelectedFoods] = useState<FoodItem[] | []>([])
 	const [totalPrice, setTotalPrice] = useState<number | 0>(0)
 	let isCustomer = auth.user.isCustomer
@@ -43,6 +46,7 @@ const Menu = ({ auth }: PageProps) => {
 		try {
 			const response = await axios.get('http://localhost:8000/getFoods');
 			setAllFoods(response.data.foods)
+			setAvailableFoods(response.data.foods)
 		} catch (error) {
 			console.log(error);
 		}
@@ -55,7 +59,6 @@ const Menu = ({ auth }: PageProps) => {
 
 	function getFilteredFood(category: categoryProp) {
 		const filteredFoods = allFoods.filter(food => {
-		// const filteredFoods = availableFoods.filter(food => {
 			return food.foodCategory === category.categoryName || (Array.isArray(food.foodCategory) && food.foodCategory?.includes(category.categoryName as FoodCategoryKey));
 		})
 		return filteredFoods
@@ -65,7 +68,6 @@ const Menu = ({ auth }: PageProps) => {
 		setActiveCategory(categories.indexOf(category))
 		if (category.categoryName == 'all') {
 			setAvailableFoods(allFoods)
-			// setAvailableFoods(availableFoods)
 		}
 		else {
 			setAvailableFoods(getFilteredFood(category))
@@ -236,6 +238,46 @@ const Menu = ({ auth }: PageProps) => {
 		toggleNewCategoryPrompt(false)
 	}
 
+	const editFood = async (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault()
+		let formData = new FormData(event.currentTarget)
+
+		try {
+			const response = await axios.post('http://localhost:8000/editFood', formData);
+			if (response.data.isDone) {
+				toggleEditPrompt(false)
+				setAllFoods(await getAllFoods());
+				
+				
+				Swal.fire({
+					icon: 'success',
+					title: `${formData.get('foodName')} updated successfully`,
+					confirmButtonColor: 'var(--green)'
+				})
+			}
+		} catch (error: any) {
+			console.error(error.message);
+			Swal.fire({
+				icon: 'error',
+				title: 'Error Occurred',
+				text: error.message,
+				confirmButtonColor: 'var(--red)'
+			});
+		}
+	}
+
+	useEffect(() => {
+		if (allFoods.length > 0 && categories.length > 0 && activeCategory !== null) {
+			setAvailableFoods(getFilteredFood(categories[activeCategory]))
+		}
+	},[allFoods])
+
+	const closeEditFoodModal = (event: React.FormEvent<Element>) => {
+		event.preventDefault()
+		toggleEditPrompt(false)
+
+	}
+
 	return (
 		<>
 			<Head title="Menu" />
@@ -245,7 +287,7 @@ const Menu = ({ auth }: PageProps) => {
 				<section>
 					{!isCustomer && <ListOrder />}
 					<CategoriesContainer title="Categories" categories={categories} activeCategory={activeCategory} allFoods={allFoods} isCustomer={isCustomer} getFilteredFood={getFilteredFood} handleCategoryClick={handleCategoryClick} openCategoryModal={openCategoryModal} />
-					<FoodList foods={availableFoods} addToShoppingList={isCustomer ? addToShoppingList : undefined} isCustomer={isCustomer} createFoodClickEvent={createFoodClickEvent} activeCategory={activeCategory} setAvailableFoods={setAvailableFoods} />
+					<FoodList foods={availableFoods} addToShoppingList={isCustomer ? addToShoppingList : undefined} isCustomer={isCustomer} createFoodClickEvent={createFoodClickEvent} activeCategory={activeCategory} setAvailableFoods={setAvailableFoods} setAllFoods={setAllFoods} toggleEditPrompt={toggleEditPrompt} setFoodToEdit={setFoodToEdit}/>
 				</section>
 				<section id="rigthSideBar">
 					<Recipent auth={auth} isCustomer />
@@ -254,6 +296,7 @@ const Menu = ({ auth }: PageProps) => {
 			</main>
 			{isNewFoodPromptOpen ? <AddFoodForm categories={categories} addFood={addFood} closeModal={closeModal} /> : null}
 			{isAddCategoryPromptOpen ? <AddCategoryForm addCategory={addCategory} closeModal={closeCategoryModal} /> : null}
+			{isEditPromptOpen && <EditFoodForm foodToEdit={foodToEdit} editFood={editFood} closeModal={closeEditFoodModal} />}
 		</>
 	)
 }

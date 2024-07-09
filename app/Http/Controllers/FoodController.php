@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Food;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Inertia\Inertia;
 use Throwable;
 
@@ -55,17 +56,48 @@ class FoodController extends Controller {
     }
 
     // Update the specified resource in storage.
-    public function update(Request $request, Food $food) {
-        $updateFood = Food::find($food->id);
-        $updateFood->foodName = $request->foodName;
-        $updateFood->image = $request->image;
-        $updateFood->price = $request->price;
-        $updateFood->isRecomended = $request->isRecomended;
-        $updateFood->discount = $request->discount;
-        $updateFood->foodCategory = $request->foodCategory;
-        $updateFood->occurence = $request->occurence;
+    public function update(Request $request) {
+        $request->validate([
+            'id' => 'required | string',
 
-        $updateFood->save();
+            'foodName' => 'required | string',
+            'price' => 'required',
+            'discount' => 'required | min:0 | max:100',
+        ]);
+
+        $updateFood = Food::find($request->id);
+
+        try {
+            if ($request->hasFile('image')){
+                $file = $request->file('image');
+                $filename = $file->getClientOriginalName();
+                File::delete(public_path('images/'.$updateFood->image));
+                $file->move(public_path('images'), $filename);
+                $updateFood->image =$filename;
+            }
+
+            if ($request->has('isRecomended')) {
+                $updateFood->isRecomended = $request->isRecomended;
+            }
+
+            $updateFood->foodName = $request->foodName;
+            $updateFood->price = $request->price;
+            $updateFood->discount = $request->discount;
+            $updateFood->foodCategory = $request->foodCategory;
+
+            $updateFood->save();
+
+            return response()->json([
+                'isDone' => true,
+            ]);
+        }
+        catch(Throwable $th) {
+            return response()->json([
+                'isDone' => false,
+                'throwable' => $th
+            ]);
+        }
+
     }
 
     // Remove the specified resource from storage.
