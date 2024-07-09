@@ -14,13 +14,16 @@ interface FoodListProps {
     addToShoppingList ? : (newFood: FoodItem) => void
     createFoodClickEvent ?: () => void
     setAvailableFoods: (availableFoods: FoodItem[]) => void
+    setAllFoods: (availableFood: FoodItem[]) => void
+	toggleEditPrompt: (newBoolean: boolean) => void
+	setFoodToEdit : (currentFoodData: Partial<FoodItem>) => void
 }
 
 export function getDiscountedPrice(discount: number, currentPrice: number) {
     return currentPrice - (discount / 100) * currentPrice;
 }
 
-const FoodList = ({ activeCategory, isCustomer, foods, addToShoppingList, createFoodClickEvent, setAvailableFoods }: FoodListProps) => {
+const FoodList = ({ activeCategory, isCustomer, foods, addToShoppingList, createFoodClickEvent, setAvailableFoods, setAllFoods, toggleEditPrompt, setFoodToEdit }: FoodListProps) => {
 
     const [categories, setCategories] = useState<categoryProp[]>([])
 
@@ -62,7 +65,7 @@ const FoodList = ({ activeCategory, isCustomer, foods, addToShoppingList, create
                             : null :
                         (
                             foods.map((food: FoodItem) => (
-                                <Food key={food.foodName} id={food.id} foodName={food.foodName} image={food.image} price={food.price} discount={food.discount} isRecomended={food.isRecomended} onFoodSelect={() => addToShoppingList && addToShoppingList(food)} isCustomer={isCustomer} setAvailableFoods={setAvailableFoods} />
+                                <Food key={food.foodName} id={food.id} foodName={food.foodName} foodCategory={food.foodCategory} image={food.image} price={food.price} discount={food.discount} isRecomended={food.isRecomended} onFoodSelect={() => addToShoppingList && addToShoppingList(food)} isCustomer={isCustomer} setAvailableFoods={setAvailableFoods} setAllFoods={setAllFoods} toggleEditPrompt={toggleEditPrompt} setFoodToEdit={setFoodToEdit}/>
                             ))
                         )
                 }

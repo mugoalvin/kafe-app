@@ -18,8 +18,9 @@ import { categoryProp } from "@/myComponents/CategoriesContainer";
 import { FoodItem } from "@/myComponents/Food";
 import axios from "axios";
 
-export type FoodCategoryKey = 'all' | 'main' | 'burger' | 'juice' | 'bento' | 'salad' | 'spanish' | 'seaFood' | 'pancake' | 'iceCream' | 'fruits' | 'others';
 export let FoodCategories = ['all', 'main', 'burger', 'juice', 'bento', 'salad', 'spanish', 'seaFood', 'pancake', 'iceCream', 'fruits', 'others']
+// export type FoodCategoryKey = 'all' | 'main' | 'burger' | 'juice' | 'bento' | 'salad' | 'spanish' | 'seaFood' | 'pancake' | 'iceCream' | 'fruits' | 'others';
+export type FoodCategoryKey = (typeof FoodCategories)[number]
 
 
 export async function fetchAllCategories() {
@@ -64,5 +65,6 @@ initializeData().then(() => {
     console.error('Error loading data:', error);
 })
 
-export let categories: [string, string, FoodCategoryKey | Array<FoodCategoryKey>][] = []
+// export let categories: [string, string, FoodCategoryKey | Array<FoodCategoryKey>][] = []
+export let categories: categoryProp[] = []
 export let allFetchedFoods: FoodItem[] = []

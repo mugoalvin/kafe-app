@@ -8,39 +8,44 @@ import { fetchAllFoods } from '@/Functions/FunctionsAndValues'
 import '../../css/FoodButtons.css'
 
 interface FoodButtonsProps {
-	foodId: number
-	foodName: string
+	currentFoodData: Partial<FoodItem>
 	setAvailableFoods: (availableFood: FoodItem[]) => void
+	setAllFoods: (availableFood: FoodItem[]) => void
+	toggleEditPrompt: (newBoolean: boolean) => void
+	setFoodToEdit : (currentFoodData: Partial<FoodItem>) => void
 }
 
-const FoodButtons = ({ foodId, foodName, setAvailableFoods }: FoodButtonsProps) => {
+const FoodButtons = ({ currentFoodData, setAllFoods, toggleEditPrompt, setFoodToEdit }: FoodButtonsProps) => {
 
 	const detailsRef = useRef<HTMLDetailsElement>(null)
 	const iconSize = 16
 
 	const handleEditClick = () => {
-		Swal.fire({
-			icon: 'warning',
-			title: 'Handling Edit',
-			text: 'This feature is not available yet',
-			showConfirmButton: false,
-			timer: 2000
-		})
+		setFoodToEdit(currentFoodData)
+		toggleEditPrompt(true)
+		// Swal.fire({
+		// 	icon: 'warning',
+		// 	title: 'Handling Edit',
+		// 	text: 'This feature is not available yet',
+		// 	showConfirmButton: false,
+		// 	timer: 2000
+		// })
 	}
 
 	const handleDeleteClick = async () => {
 		try {
-			const response = await axios.post('http://localhost:8000/deleteFood', { 'FoodId': foodId })
+			const response = await axios.post('http://localhost:8000/deleteFood', { 'FoodId': currentFoodData.id })
 			if (response.data.isDeleted) {
 				Swal.fire({
 					icon: 'success',
 					title: 'Deleted',
-					text: `${foodName} was deleted successfully`,
+					text: `${currentFoodData.foodName} was deleted successfully`,
 					showConfirmButton: false,
 					timer: 2000
 				})
 			}
-			setAvailableFoods(await fetchAllFoods())
+			// setAvailableFoods(await fetchAllFoods())
+			setAllFoods(await fetchAllFoods())
 		}
 		catch (error) {
 			console.log(error)
@@ -62,6 +67,9 @@ const FoodButtons = ({ foodId, foodName, setAvailableFoods }: FoodButtonsProps) 
 			if (e.key == "Escape" && detailsRef.current?.open) {
 				detailsRef.current.open = false
 			}
+		}
+		function doSomething() {
+			console.log("I was clicked");
 		}
 
 		document.addEventListener('keydown', handleKeyDown)
