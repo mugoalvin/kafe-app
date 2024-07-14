@@ -3,11 +3,14 @@
 	flex-direction: column;
 	justify-content: space-between;
 	gap: 10px;
-	/* min-width: 100px;
-	max-width: 250px; */
 	padding: 10px;
 	border-radius: 10px;
-	/* background-color: var(--gray); */
+	cursor: pointer;
+}
+
+.outOfStock{
+	opacity: 0.5;
+	cursor: auto;
 }
 
 .food img {

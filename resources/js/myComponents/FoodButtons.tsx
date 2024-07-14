@@ -1,35 +1,42 @@
 import { IoEllipsisVertical, IoPencil } from 'react-icons/io5'
 import { MdDoDisturbAlt, MdOutlineDeleteOutline } from 'react-icons/md'
 import Swal from 'sweetalert2'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
-import { FoodItem } from './Food'
+import Food, { FoodItem } from './Food'
 import { fetchAllFoods } from '@/Functions/FunctionsAndValues'
+import { categoryProp } from './CategoriesContainer'
 import '../../css/FoodButtons.css'
 
 interface FoodButtonsProps {
 	currentFoodData: Partial<FoodItem>
+	categories: categoryProp[]
+	activeCategory: number
 	setAvailableFoods: (availableFood: FoodItem[]) => void
 	setAllFoods: (availableFood: FoodItem[]) => void
 	toggleEditPrompt: (newBoolean: boolean) => void
 	setFoodToEdit : (currentFoodData: Partial<FoodItem>) => void
+	getFilteredFood : (category: categoryProp) => FoodItem[]
 }
 
-const FoodButtons = ({ currentFoodData, setAllFoods, toggleEditPrompt, setFoodToEdit }: FoodButtonsProps) => {
+const FoodButtons = ({ currentFoodData, categories, activeCategory, getFilteredFood, setAllFoods, setAvailableFoods, toggleEditPrompt, setFoodToEdit }: FoodButtonsProps) => {
 
+	const [isDetailsOpen, toggleDetailsOpen] = useState<boolean>(false)
 	const detailsRef = useRef<HTMLDetailsElement>(null)
 	const iconSize = 16
+
+	const closeDetails = () => {
+		if (detailsRef.current) {
+			detailsRef.current.removeAttribute('open');
+			toggleDetailsOpen(false);
+		}
+	}
+
 
 	const handleEditClick = () => {
 		setFoodToEdit(currentFoodData)
 		toggleEditPrompt(true)
-		// Swal.fire({
-		// 	icon: 'warning',
-		// 	title: 'Handling Edit',
-		// 	text: 'This feature is not available yet',
-		// 	showConfirmButton: false,
-		// 	timer: 2000
-		// })
+		closeDetails()
 	}
 
 	const handleDeleteClick = async () => {
@@ -43,6 +50,7 @@ const FoodButtons = ({ currentFoodData, setAllFoods, toggleEditPrompt, setFoodTo
 					showConfirmButton: false,
 					timer: 2000
 				})
+				closeDetails()
 			}
 			// setAvailableFoods(await fetchAllFoods())
 			setAllFoods(await fetchAllFoods())
@@ -52,14 +60,16 @@ const FoodButtons = ({ currentFoodData, setAllFoods, toggleEditPrompt, setFoodTo
 		}
 	}
 
-	const handleOutOfStockClick = () => {
-		Swal.fire({
-			icon: 'warning',
-			title: 'Handling Stock',
-			text: 'This feature is not available yet',
-			showConfirmButton: false,
-			timer: 2000
-		})
+	const handleOutOfStockClick = async () => {
+		try {
+			const response = await axios.post('http://localhost:8000/setOutOfStock', {'food': currentFoodData})
+			if (response.data.isCompleted) 
+			setAllFoods(await fetchAllFoods())
+			closeDetails()
+		}
+		catch (error) {
+			console.log(error)
+		}
 	}
 
 	useEffect(() => {
@@ -67,9 +77,6 @@ const FoodButtons = ({ currentFoodData, setAllFoods, toggleEditPrompt, setFoodTo
 			if (e.key == "Escape" && detailsRef.current?.open) {
 				detailsRef.current.open = false
 			}
-		}
-		function doSomething() {
-			console.log("I was clicked");
 		}
 
 		document.addEventListener('keydown', handleKeyDown)
@@ -79,36 +86,19 @@ const FoodButtons = ({ currentFoodData, setAllFoods, toggleEditPrompt, setFoodTo
 		}
 	}, [])
 
-	// =================================[BUG] Failed to get this to work properly. When clicking the contents inside the details tag they just close unexpectedly.=================================
-	{
-
-		// useEffect(() => {
-		// 	const handleFocusOut = (event: FocusEvent) => {
-		// 		if (detailsRef.current?.open && !detailsRef.current.contains(event.relatedTarget as Node)) {
-		// 			detailsRef.current.open = false;
-		// 		}
-		// 	};
-
-		// 	document.addEventListener('focusout', handleFocusOut);
-
-		// 	return () => {
-		// 		document.removeEventListener('focusout', handleFocusOut);
-		// 	};
-		// }, []);
-
+	const handleDetailsClick = (event: any) => {
+		event.stopPropagation()
 	}
-	// ====================================================================================================================================================
-
 
 	return (
-		<details id='details' ref={detailsRef}>
+		<details id='details' ref={detailsRef} onClick={handleDetailsClick}>
 			<summary style={{ height: '100%', display: 'flex', alignItems: 'center', listStyle: 'none' }}>
 				<IoEllipsisVertical style={{ height: '100%' }} />
 			</summary>
 			<ul id='ellipsisMenu'>
 				<li onClick={handleEditClick}><IoPencil size={iconSize} />Edit</li>
 				<li onClick={handleDeleteClick}><MdOutlineDeleteOutline size={iconSize} />Delete</li>
-				<li onClick={handleOutOfStockClick}><MdDoDisturbAlt size={iconSize} /> Out Of Stock</li>
+				<li onClick={handleOutOfStockClick}><MdDoDisturbAlt size={iconSize} />{currentFoodData.occurence == 0 ? 'Back In-Stock' : 'Out Of Stock'}</li>
 			</ul>
 		</details>
 	)

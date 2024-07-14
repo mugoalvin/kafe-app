@@ -6,6 +6,7 @@ use App\Models\Food;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Inertia\Inertia;
+use Symfony\Component\Console\Input\Input;
 use Throwable;
 
 class FoodController extends Controller {
@@ -36,6 +37,7 @@ class FoodController extends Controller {
         $newFood->discount = (int)$request->input('discount');
         $newFood->foodCategory = $request->input('foodCategory');
         $newFood->isRecomended = filter_var($request->input('isRecomended'), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? false;
+        // $newFood->isRecomended = false;
         $newFood->occurence = 1;
 
         $newFood->save();
@@ -59,10 +61,10 @@ class FoodController extends Controller {
     public function update(Request $request) {
         $request->validate([
             'id' => 'required | string',
-
             'foodName' => 'required | string',
             'price' => 'required',
             'discount' => 'required | min:0 | max:100',
+            // 'isRecomended' => 'required'
         ]);
 
         $updateFood = Food::find($request->id);
@@ -76,19 +78,17 @@ class FoodController extends Controller {
                 $updateFood->image =$filename;
             }
 
-            if ($request->has('isRecomended')) {
-                $updateFood->isRecomended = $request->isRecomended;
-            }
-
             $updateFood->foodName = $request->foodName;
             $updateFood->price = $request->price;
             $updateFood->discount = $request->discount;
             $updateFood->foodCategory = $request->foodCategory;
+            $updateFood->isRecomended = $request->has('isRecomended') ? true : false;
 
             $updateFood->save();
 
             return response()->json([
                 'isDone' => true,
+                'updateFood' => $updateFood
             ]);
         }
         catch(Throwable $th) {
@@ -97,7 +97,19 @@ class FoodController extends Controller {
                 'throwable' => $th
             ]);
         }
+    }
 
+    // Setting Food Out Of Stock
+    public function outOfStock(Request $request) {
+        $outOfStockFood = Food::find($request->food['id']);
+
+        $outOfStockFood->occurence = $outOfStockFood->occurence == 0 ? 1 : 0;
+
+        $outOfStockFood->save();
+
+        return response()->json([
+            'isCompleted' => true
+        ]);
     }
 
     // Remove the specified resource from storage.
