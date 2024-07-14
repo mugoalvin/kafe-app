@@ -64,15 +64,13 @@ Route::get('/history', function () {
     return Inertia::render('History');
 })->middleware(['auth', 'verified'])->name('history');
 
-Route::get('/addFood', function () {
-    return Inertia::render('AddFood');
-})->middleware(['auth', 'verified'])->name('addFood');
-
 // Foods
 Route::get('/getFoods', [FoodController::class, 'index']);
 Route::post('/addFood', [FoodController::class, 'store']);
 Route::post('editFood', [FoodController::class, 'update']);
 Route::post('/deleteFood', [FoodController::class, 'destroy']);
+
+Route::post('/setOutOfStock', [FoodController::class, 'outOfStock']);
 
 // Orders
 Route::post('/saveOrder', [OrderController::class, 'store']);

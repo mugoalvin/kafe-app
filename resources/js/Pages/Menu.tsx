@@ -15,7 +15,6 @@ import AddFoodForm from "@/myComponents/AddFoodModal";
 import AddCategoryForm from "@/myComponents/AddCategoryForm";
 import EditFoodForm from "@/myComponents/EditFoodModal";
 
-
 const Menu = ({ auth }: PageProps) => {
 
 	const [allFoods, setAllFoods] = useState<FoodItem[]>([])
@@ -121,14 +120,18 @@ const Menu = ({ auth }: PageProps) => {
 
 	function makePayment(computedPrice: number) {
 		Swal.fire({
-			title: "Are you sure?",
-			text: `You are about to pay a total of Ksh ${computedPrice}`,
+			title: "Payment Method",
+			text: 'Choose Payment Method',
 			icon: "warning",
-			showCancelButton: true,
+
 			confirmButtonColor: "var(--green)",
-			cancelButtonColor: "var(--red)",
-			confirmButtonText: "Yes, make payment!",
-		}).then((result) => {
+			confirmButtonText: "M-Pesa",
+
+			showCancelButton: true,
+			cancelButtonColor: "var(--green)",
+			cancelButtonText: "Cash"
+		})
+		.then((result) => {
 			if (result.isConfirmed) {
 				selectedFoods.forEach(selectedFood => {
 					selectedFood.occurence = foodOccurrenceMap[selectedFood.foodName]
@@ -152,6 +155,13 @@ const Menu = ({ auth }: PageProps) => {
 					}
 				}
 				sendRequest()
+			}
+			if(!result.isConfirmed){
+				// Cash Payment Option
+				Swal.fire({
+					title: "Cash Payment",
+					text: 'Shall be payed upon delivery',
+				})
 			}
 		})
 	}
@@ -246,16 +256,16 @@ const Menu = ({ auth }: PageProps) => {
 			const response = await axios.post('http://localhost:8000/editFood', formData);
 			if (response.data.isDone) {
 				toggleEditPrompt(false)
-				setAllFoods(await getAllFoods());
-				
-				
+				setAllFoods(await getAllFoods())
+								
 				Swal.fire({
 					icon: 'success',
 					title: `${formData.get('foodName')} updated successfully`,
 					confirmButtonColor: 'var(--green)'
 				})
 			}
-		} catch (error: any) {
+		}
+		catch (error: any) {
 			console.error(error.message);
 			Swal.fire({
 				icon: 'error',
@@ -287,7 +297,7 @@ const Menu = ({ auth }: PageProps) => {
 				<section>
 					{!isCustomer && <ListOrder />}
 					<CategoriesContainer title="Categories" categories={categories} activeCategory={activeCategory} allFoods={allFoods} isCustomer={isCustomer} getFilteredFood={getFilteredFood} handleCategoryClick={handleCategoryClick} openCategoryModal={openCategoryModal} />
-					<FoodList foods={availableFoods} addToShoppingList={isCustomer ? addToShoppingList : undefined} isCustomer={isCustomer} createFoodClickEvent={createFoodClickEvent} activeCategory={activeCategory} setAvailableFoods={setAvailableFoods} setAllFoods={setAllFoods} toggleEditPrompt={toggleEditPrompt} setFoodToEdit={setFoodToEdit}/>
+					<FoodList foods={availableFoods} addToShoppingList={isCustomer ? addToShoppingList : undefined} isCustomer={isCustomer} createFoodClickEvent={createFoodClickEvent} activeCategory={activeCategory} setAvailableFoods={setAvailableFoods} setAllFoods={setAllFoods} toggleEditPrompt={toggleEditPrompt} setFoodToEdit={setFoodToEdit} getFilteredFood={getFilteredFood} />
 				</section>
 				<section id="rigthSideBar">
 					<Recipent auth={auth} isCustomer />

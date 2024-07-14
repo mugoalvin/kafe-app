@@ -3,8 +3,8 @@
 
 
  	display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Example of responsive column sizing */
-    grid-auto-flow: dense; /* This will make items fill in available space and wrap */
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-auto-flow: dense;
 
 
 	/* display: grid;

@@ -55,9 +55,8 @@ const EditFoodForm = ({foodToEdit, editFood, closeModal} : EditFoodFormProps) =>
 							{
 								categories.map(category => {
 									if (category.title != 'All'){
-
 										return (
-											<option value={category.categoryName}>{category.title}</option>
+											<option key={category.categoryName} value={category.categoryName}>{category.title}</option>
 										)
 									}
 								})
@@ -68,7 +67,7 @@ const EditFoodForm = ({foodToEdit, editFood, closeModal} : EditFoodFormProps) =>
 						<input type="checkbox" name="isRecomended" placeholder='Food Name' defaultChecked={foodToEdit?.isRecomended}/>Recommended
 					</div>
 					<div id='modalButtonDiv'>
-						<Buttons buttonText="Add Food" />
+						<Buttons buttonText="Update" />
 						<Buttons buttonText='Cancel' onClickAction={(event: React.FormEvent<Element>) => closeModal(event)}/>
 					</div>
 				</form>
